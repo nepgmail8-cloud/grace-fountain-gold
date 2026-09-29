@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Grace Fountain Assembly</title>
+<style>
+  :root{
+    --gold:#D4AF37; --dark-gold:#B8860B; --black:#000; --white:#ffffff;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;font-family:"Segoe UI",Georgia,serif}
+  body{background:var(--gold);color:var(--black);overflow:hidden}
+
+  /* SPLASH - WATER POURING */
+.splash{position:fixed;inset:0;background:var(--gold);display:flex;flex-direction:column;justify-content:center;align-items:center;z-index:9999;animation:fadeOut 1s ease 5s forwards}
+.glass{width:140px;height:200px;border:8px solid var(--black);border-bottom:20px solid var(--black);border-radius:0 0 70px 70px;position:relative;overflow:hidden;background:transparent}
+.water{position:absolute;bottom:0;left:0;width:100%;height:0;background:linear-gradient(to top, #0047AB, #00AEEF);animation:fillGlass 4s ease 1s forwards}
+@keyframes fillGlass{0%{height:0}100%{height:100%;background:#0047AB}}
+@keyframes fadeOut{to{opacity:0;visibility:hidden}}
+.splash h2{margin-top:20px;font-size:20px;letter-spacing:3px;color:var(--black)}
+
+  /* LOGIN */
+.login{position:fixed;inset:0;background:var(--gold);display:flex;justify-content:center;align-items:center;z-index:100}
+.login-box{background:var(--black);padding:40px;border-radius:20px;width:90%;max-width:400px;text-align:center;box-shadow:0 0 30px var(--dark-gold)}
+.login-box h1{color:var(--gold);margin-bottom:10px;font-size:26px}
+.login-box p{color:var(--white);margin-bottom:20px}
+.login-box input{width:100%;padding:14px;margin:10px 0;border:none;border-radius:10px;background:#222;color:var(--white);font-size:16px}
+.login-box button{width:100%;padding:14px;margin-top:10px;border:none;border-radius:10px;background:var(--gold);color:var(--black);font-size:18px;font-weight:800;cursor:pointer}
+.login-box button:hover{background:var(--dark-gold)}
+
+  /* APP */
+.app{display:none;flex-direction:column;height:100vh}
+header{background:var(--black);color:var(--gold);padding:16px;text-align:center;font-size:22px;font-weight:800;letter-spacing:2px}
+nav{display:flex;background:var(--black);overflow-x:auto}
+.nav-btn{flex:1;min-width:120px;padding:14px;color:var(--gold);background:none;border:none;font-size:15px;font-weight:700;cursor:pointer;border-bottom:3px solid transparent}
+.nav-btn.active{border-bottom:3px solid var(--gold);background:#111}
+
+.content{flex:1;overflow-y:auto;padding:20px}
+.section{display:none}
+.section.active{display:block;animation:fadeIn 0.4s ease}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+
+.card{background:var(--black);color:var(--white);padding:20px;border-radius:16px;margin-bottom:20px;border:2px solid var(--gold)}
+.card h3{color:var(--gold);margin-bottom:12px;font-size:20px}
+.editable{min-height:100px;padding:12px;border:1px dashed var(--gold);border-radius:10px;background:#111;color:var(--white);outline:none}
+.save-btn{margin-top:10px;padding:10px 20px;background:var(--gold);color:var(--black);border:none;border-radius:8px;font-weight:700;cursor:pointer}
+
+.founder{display:flex;gap:20px;align-items:center;flex-wrap:wrap}
+.founder img{width:100px;height:100px;border-radius:50%;border:3px solid var(--gold);object-fit:cover}
+.founder h4{color:var(--gold);font-size:18px}
+
+.links{display:flex;flex-direction:column;gap:14px}
+.link-btn{display:flex;align-items:center;gap:12px;padding:14px;background:var(--black);color:var(--gold);border:2px solid var(--gold);border-radius:12px;text-decoration:none;font-weight:700;font-size:16px}
+.link-btn:hover{background:var(--dark-gold);color:var(--black)}
+</style>
+</head>
+<body>
+
+<!-- SPLASH -->
+<div class="splash">
+  <div class="glass"><div class="water"></div></div>
+  <h2>GRACE FOUNTAIN ASSEMBLY</h2>
+</div>
+
+<!-- LOGIN -->
+<div class="login" id="login">
+  <div class="login-box">
+    <h1>Grace Fountain Assembly</h1>
+    <p>Welcome to Grace Fountain</p>
+    <input type="text" id="username" placeholder="Enter your name">
+    <input type="password" id="password" placeholder="1131">
+    <button onclick="enterApp()">Enter</button>
+  </div>
+</div>
+
+<!-- APP -->
+<div class="app" id="app">
+  <header>GRACE FOUNTAIN ASSEMBLY</header>
+  
+  <nav>
+    <button class="nav-btn active" onclick="showSection('devotional',this)">Devotional</button>
+    <button class="nav-btn" onclick="showSection('bible',this)">Bible Verse</button>
+    <button class="nav-btn" onclick="showSection('info',this)">Information</button>
+    <button class="nav-btn" onclick="showSection('links',this)">Links</button>
+  </nav>
+
+  <div class="content">
+    <!-- DEVOTIONAL -->
+    <div class="section active" id="devotional">
+      <div class="card">
+        <h3>Daily Devotional</h3>
+        <div class="editable" contenteditable="true" id="devText">Type today's devotional here... 
+It will be saved automatically.</div>
+        <button class="save-btn" onclick="save('devText')">Save Devotional</button>
+      </div>
+    </div>
+
+    <!-- BIBLE VERSE -->
+    <div class="section" id="bible">
+      <div class="card">
+        <h3>Bible Verse of the Day</h3>
+        <div class="editable" contenteditable="true" id="bibleText">John 4:14 - "But whoever drinks the water I give them will never thirst. Indeed, the water I give them will become in them a spring of water welling up to eternal life."</div>
+        <button class="save-btn" onclick="save('bibleText')">Save Verse</button>
+      </div>
+    </div>
+
+    <!-- INFORMATION -->
+    <div class="section" id="info">
+      <div class="card">
+        <h3>About Our Church</h3>
+        <p>This is Grace Fountain Assembly website where you hear devotionals and get linked to God's word.</p>
+      </div>
+      <div class="card founder">
+        <img src="1000002360.jpg">
+        <div>
+          <h4>Rev. Emmanuel Chigozie Nelson</h4>
+          <p>Founder of Grace Fountain Assembly. A reverend called by God to raise a fountain of grace.</p>
+        </div>
+      </div>
+      <div class="card founder">
+        <img src="1000008768.jpg">
+        <div>
+          <h4>Mama Blessing Nelson</h4>
+          <p>Beautiful wife and co-laborer in the work of ministry at Grace Fountain Assembly.</p>
+        </div>
+      </div>
+      <div class="card">
+        <h3>Church Information</h3>
+        <div class="editable" contenteditable="true" id="infoText">Type church announcements, programs, and information here...</div>
+       <a href="videofountain.html"><button class="save-btn">Video Fountain</button></a> 
+      </div>
+    </div>
+
+    <!-- LINKS -->
+    <div class="section" id="links">
+      <div class="card">
+        <h3>Connect With Us</h3>
+        <div class="links">
+          <a href="#" class="link-btn" contenteditable="true">📱 WhatsApp Group Link - Click to edit and paste link</a>
+          <a href="#" class="link-btn" contenteditable="true">📘 Facebook Page Link - Click to edit and paste link</a>
+          <a href="#" class="link-btn" contenteditable="true">🎵 TikTok Page Link - Click to edit and paste link</a>
+        </div>
+        <p style="margin-top:15px;font-size:13px;color:var(--muted)">Click on any link above and paste your real link</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Hide splash then show login
+  setTimeout(()=>{document.getElementById('login').style.display='flex'}, 5000);
+
+  function enterApp(){
+    const name = document.getElementById('username').value;
+    if(name.trim() === ''){alert('Please enter your name');return}
+    document.getElementById('login').style.display='none';
+    document.getElementById('app').style.display='flex';
+  }
+
+  function showSection(id, btn){
+    document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+    document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    btn.classList.add('active');
+  }
+
+  // Save to localStorage
+  function save(id){
+    localStorage.setItem(id, document.getElementById(id).innerHTML);
+    alert('Saved!');
+  }
+
+  // Load saved data
+  window.onload = () =>{
+    ['devText','bibleText','infoText'].forEach(id=>{
+      const saved = localStorage.getItem(id);
+      if(saved) document.getElementById(id).innerHTML = saved;
+    })
+  }
+</script>
+</body>
+</html>
